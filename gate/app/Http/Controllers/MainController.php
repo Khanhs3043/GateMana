@@ -16,8 +16,7 @@ class MainController extends Controller
         $user = Auth::user();
 
         // Lấy lịch sử ra vào của người dùng hiện tại
-        $parkingHistories = ParkingHistory::where('uid', $user->id)->get();
-    
+        $parkingHistories = ParkingHistory::where('uid', $user->id)->orderBy('entry_time', 'desc')->get();
         // Tính tổng số tiền từ lịch sử gửi xe
         $totalAmount = $parkingHistories->sum('amount');
     
