@@ -13,6 +13,13 @@
         <img src="/embedded.png" alt="Logo">
         <h3>Quản Lý Ra Vào - RFID</h3>
     </div>
+    @if(Auth::user()->role == 'admin')
+    <div class="nav">
+        <a href="/" class="nav1">Home</a>
+        <a href="/accounts" class="nav1">Accounts</a>
+        <a href="/assign-card" class="nav1">Assign card</a>
+    </div>
+    @endif
     <div class="user-info">
         <img src="{{Auth::user()->avatar}}" alt="Avatar">
         <span>{{ Auth::user()->name }}</span>

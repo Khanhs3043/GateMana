@@ -18,7 +18,7 @@
             <select name="user_id" id="user_id" class="form-control" required>
                 <option value="">-- Chọn người dùng --</option>
                 @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }} (ID: {{ $user->id }})</option>
+                    <option value="{{ $user->id }}">{{ $user->name }} (ID: {{ $user->id }}, Email: {{$user->email}})</option>
                 @endforeach
             </select>
         </div>
