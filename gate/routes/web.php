@@ -14,5 +14,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
     Route::get('/assign-card', [MainController::class, 'showAssignCardForm']);
     Route::post('/assign-card', [MainController::class, 'assignCard']);
+    Route::delete('/deleteAccount/{id}', [MainController::class, 'deleteAccount']);
+    Route::post('/unassignCard/{id}', [MainController::class, 'unassignCard']);
+    Route::get('/accounts', [MainController::class, 'accountMana']);
 });
 Route::get('/handle/{cardId}', [MainController::class, 'handle']);

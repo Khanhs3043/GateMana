@@ -15,7 +15,7 @@
     </div>
     @if(Auth::user()->role == 'admin')
     <div class="nav">
-        <a href="/" class="nav1">Home</a>
+        <a href="/" class="nav1">In-Out</a>
         <a href="/accounts" class="nav1">Accounts</a>
         <a href="/assign-card" class="nav1">Assign card</a>
     </div>
@@ -23,7 +23,7 @@
     <div class="user-info">
         <img src="{{Auth::user()->avatar}}" alt="Avatar">
         <span>{{ Auth::user()->name }}</span>
-        <form method="POST" action="/logout">
+        <form method="POST" action="/logout" >
             @csrf
             <button type="submit" class="btn btn-outline-light btn-sm">Đăng Xuất</button>
         </form>

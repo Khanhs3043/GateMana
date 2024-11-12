@@ -114,4 +114,24 @@ class MainController extends Controller
 
         return redirect()->back()->with('success', 'Thẻ đã được gán thành công!');
     }
+
+    public function accountMana(){
+        $users = User::all();
+        return view('accounts', compact('users')) ;
+    }
+    public function unassignCard($id){
+        $user = User::find($id);
+        $cardId = $user->card_id;
+        $user->card_id = null;
+        $user->save();
+        UnknownCard::create(['card_id' => $cardId]);
+        return redirect()->back()->with('success', 'Gỡ thẻ thành công!');
+    }
+    public function deleteAccount($id){
+        $user = User::find($id);
+        if($user->card_id)
+            UnknownCard::create(['card_id' => $user->card_id]);
+        $user->delete();
+        return redirect()->back()->with('success', 'Xóa tài khoản thành công!');
+    }
 }

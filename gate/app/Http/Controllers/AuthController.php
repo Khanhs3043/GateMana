@@ -29,7 +29,7 @@ class AuthController extends Controller
         if ($user) {
             if($user->role=='admin') {
                 Auth::login($user);
-                return redirect('/assign-card');   
+                return redirect('/accounts');   
             }
             Auth::login($user);
             return redirect('/');
