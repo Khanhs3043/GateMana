@@ -111,3 +111,8 @@
     margin-left: 20px;
     border-left: 2px solid rgba(255, 255, 255, 0.478);
 }
+.alert {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

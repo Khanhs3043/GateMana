@@ -17,6 +17,7 @@
                         <th>Email</th>
                         <th>Vai trò</th>
                         <th>ID thẻ</th>
+                        <th>Phí gửi xe</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -29,6 +30,7 @@
                         <td>{{ $user->role }}</td>
 
                         <td>{{ $user->card_id ??'-- chưa có thẻ --' }}</td>
+                        <td>{{ $user->total ?? '0.0' }}</td>
                         <td class="text-center">
                             @if($user->card_id)
                             <form action="/unassignCard/{{$user->id}}" method="POST" style="display: inline;">

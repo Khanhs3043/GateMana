@@ -17,5 +17,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/deleteAccount/{id}', [MainController::class, 'deleteAccount']);
     Route::post('/unassignCard/{id}', [MainController::class, 'unassignCard']);
     Route::get('/accounts', [MainController::class, 'accountMana']);
+    Route::get('/payment-history/{uid}', [MainController::class, 'showPaymentHistory']);
+    Route::post('/pay/{uid}', [MainController::class, 'pay']);
+
 });
 Route::get('/handle/{cardId}', [MainController::class, 'handle']);

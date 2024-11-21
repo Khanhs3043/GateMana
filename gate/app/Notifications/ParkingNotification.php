@@ -2,9 +2,11 @@
 
 namespace App\Notifications;
 
+use App\Mail\MailTemplate;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Mail;
 
 class ParkingNotification extends Notification
 {
@@ -38,38 +40,26 @@ class ParkingNotification extends Notification
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Send the email notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return void
      */
     public function toMail($notifiable)
     {
-        if ($this->isEntry) {
-            return (new MailMessage)
-                ->greeting('Xin chào ' . $this->user->name)
-                ->line('Xe của bạn đã vào cổng lúc ' . now()->format('H:i d/m/Y') . '.')
-                ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!');
-        } else {
-            return (new MailMessage)
-                ->greeting('Xin chào ' . $this->user->name)
-                ->line('Xe của bạn đã ra cổng lúc ' . now()->format('H:i d/m/Y') . '.')
-                ->line('Tiền gửi xe là ' . number_format($this->amount, 2) . ' VND.')
-                ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!');
-        }
+        $message = $this->isEntry
+            ? 'Xe của bạn đã vào cổng lúc ' . now()->format('H:i d/m/Y') . '.'
+            : 'Xe của bạn đã ra cổng lúc ' . now()->format('H:i d/m/Y') . 
+            ' Tiền gửi xe là ' . number_format($this->amount, 2) . ' VND.';
+
+        // Sử dụng html() để tạo email HTML
+        return (new MailMessage)
+            ->subject('Thông báo gửi xe')
+            ->greeting('Xin chào ' . $this->user->name)
+            ->line($message)
+            ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!')
+            ->line('Regards, Laravel');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            'isEntry' => $this->isEntry,
-            'amount' => $this->amount,
-        ];
-    }
+
 }

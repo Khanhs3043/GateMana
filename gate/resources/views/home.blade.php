@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 
 <!-- Nội dung chính -->
@@ -23,7 +22,11 @@
         <h3>QR Thanh Toán</h3>
         <div id="qr-code"></div>
             <button class="btn btn-close" id="btn-close-qr" >&times;</button>
-            <button class="btn btn-primary" style="background-color: #28a745;">Hoàn thành</button>
+            <form action="/pay/{{Auth::user()->id}}" method="post">
+                @csrf 
+                <button type="submit" class="btn btn-primary" style="background-color: #28a745;">Hoàn thành</button>
+            </form>
+            
     </div></div>
 
     <!-- Bảng lịch sử -->

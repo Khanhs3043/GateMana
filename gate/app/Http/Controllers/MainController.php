@@ -8,6 +8,7 @@ use App\Models\UnknownCard;
 use App\Notifications\ParkingNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PaymentHistory;
 
 class MainController extends Controller
 {
@@ -18,7 +19,7 @@ class MainController extends Controller
         // Lấy lịch sử ra vào của người dùng hiện tại
         $parkingHistories = ParkingHistory::where('uid', $user->id)->orderBy('entry_time', 'desc')->get();
         // Tính tổng số tiền từ lịch sử gửi xe
-        $totalAmount = $parkingHistories->sum('amount');
+        $totalAmount = $user->total;
     
         // Truyền dữ liệu lịch sử và tổng tiền vào view
         return view('home', [
@@ -134,4 +135,51 @@ class MainController extends Controller
         $user->delete();
         return redirect()->back()->with('success', 'Xóa tài khoản thành công!');
     }
+    
+
+    public function storePaymentHistory(Request $request)
+    {
+        $validated = $request->validate([
+            'uid' => 'required|exists:users,id',
+            'amount' => 'required|numeric',
+        ]);
+
+        $paymentHistory = PaymentHistory::create([
+            'uid' => $validated['uid'],
+            'amount' => $validated['amount'],
+        ]);
+
+        return response()->json($paymentHistory, 201);
+    }
+    public function showPaymentHistory($uid)
+    {
+        $paymentHistories = PaymentHistory::where('uid', $uid)
+                                          ->orderBy('payment_date', 'desc')
+                                          ->get();
+    
+        return view('payment', compact('paymentHistories'));
+    }
+    public function pay($uid)
+    {
+        // Lấy thông tin user từ database
+        $user = User::find($uid);
+
+        if (!$user) {
+            return redirect()->back()->with(['error' => 'User not found'], 404);
+        }
+
+
+        try {
+            $payment = new PaymentHistory();
+            $payment->uid = $user->id;
+            $payment->amount = $user->total;
+            $payment->save();
+            $user->total = 0;
+            $user->save();
+            return redirect()->back()->with(['success' => 'Payment successful'], 200);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => 'Payment failed', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
 }
