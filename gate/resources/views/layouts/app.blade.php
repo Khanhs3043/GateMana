@@ -40,20 +40,16 @@
         <img src="/embedded.png" alt="Logo">
         <h3>Quản Lý Ra Vào - RFID</h3>
     </div>
-    
-    @if(Auth::user()->role == 'admin')
     <div class="nav">
-        <a href="/" class="nav1">In-Out</a>
+    <a href="/" class="nav1">In-Out</a>
+    @if(Auth::user()->role == 'admin')
         <a href="/accounts" class="nav1">Accounts</a>
         <a href="/assign-card" class="nav1">Assign card</a>
-    </div>
     @endif
-    @if(Auth::user()->paymentHistories != null)
-    <div class="nav">
-        <a href="/" class="nav1">In-Out</a>
+    @if(Auth::user()->paymentHistories->isNotEmpty())
         <a href="/payment-history/{{Auth::user()->id}}" class="nav1">Payment Histories</a>
-    </div>
     @endif
+    </div>
     <div class="user-info">
         <img src="{{Auth::user()->avatar}}" alt="Avatar">
         <span>{{ Auth::user()->name }}</span>
